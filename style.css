@@ -1,0 +1,64 @@
+/* Keyboard panel */
+details.kbd-panel {
+  margin: 1.25rem auto;
+  max-width: 600px;           /* narrower overall width */
+  text-align: left;
+}
+details.kbd-panel > summary {
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  padding: .4rem .7rem;
+  border: 1px solid #ddd;
+  border-radius: .4rem;
+  display: inline-block;
+  user-select: none;
+  background: #fafafa;
+}
+.kbd-content { padding: .6rem 0; }
+
+.keyboard {
+  display: grid;
+  gap: .4rem;
+  justify-content: center;    /* center inside narrower container */
+}
+
+.key-row {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  justify-content: center;    /* make each row centered */
+}
+
+.key {
+  border: 1px solid #ccc;
+  border-radius: .35rem;
+  padding: .35rem .45rem;
+  min-width: 2.8rem;          /* slightly smaller keys */
+  text-align: center;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  box-shadow: 0 1px 0 rgba(0,0,0,.04);
+  background: #fafafa;
+  position: relative;
+  transition: transform 60ms ease, box-shadow 60ms ease, background-color 120ms ease;
+}
+.key .label {
+  display: block;
+  font-size: .75rem;
+  color: #444;
+  margin-top: .15rem;
+}
+.key.active {
+  transform: scale(1.05);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255,0,0,.15);
+  border-color: #f55;
+}
+
+.hint {
+  font-size: .8rem;
+  color: #666;
+  margin-top: .2rem;
+  text-align: center;
+}

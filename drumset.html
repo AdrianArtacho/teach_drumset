@@ -9,16 +9,10 @@
     .toolbar { margin: 1rem 0; }
     .drumset { position: relative; display: inline-block; }
     .drum-element {
-      position: absolute;
-      cursor: pointer;
-      color: red;
-      font-weight: bold;
+      position: absolute; cursor: pointer; color: red; font-weight: bold;
       transition: transform 80ms ease;
     }
-    .drum-element.active {
-      transform: scale(1.12);
-      text-shadow: 0 0 6px rgba(255, 0, 0, 0.7);
-    }
+    .drum-element.active { transform: scale(1.12); text-shadow: 0 0 6px rgba(255,0,0,.7); }
 
     .kick { top: 205px; left: 205px; }
     .snare { top: 179px; left: 304px; }
@@ -34,7 +28,71 @@
     .tomhigh { top: 111px; left: 285px; }
     .tomhighrim { top: 131px; left: 285px; }
 
-    .status { font-size: 0.9rem; color: #555; margin-top: 0.5rem; }
+    /* Keyboard panel */
+    details.kbd-panel {
+        margin: 1.25rem auto;
+        max-width: 600px;           /* narrower overall width */
+        text-align: left;
+    }
+    details.kbd-panel > summary {
+        cursor: pointer;
+        list-style: none;
+        font-weight: 600;
+        padding: .4rem .7rem;
+        border: 1px solid #ddd;
+        border-radius: .4rem;
+        display: inline-block;
+        user-select: none;
+        background: #fafafa;
+    }
+    .kbd-content { padding: .6rem 0; }
+
+    .keyboard {
+        display: grid;
+        gap: .4rem;
+        justify-content: center;    /* center inside narrower container */
+    }
+
+    .key-row {
+        display: flex;
+        gap: .4rem;
+        flex-wrap: wrap;
+        justify-content: center;    /* make each row centered */
+    }
+
+    .key {
+        border: 1px solid #ccc;
+        border-radius: .35rem;
+        padding: .35rem .45rem;
+        min-width: 1.1rem;          /* slightly smaller keys */
+        text-align: center;
+        font-family: ui-monospace, monospace;
+        font-size: 0.85rem;
+        box-shadow: 0 1px 0 rgba(0,0,0,.04);
+        background: #fafafa;
+        position: relative;
+        transition: transform 60ms ease, box-shadow 60ms ease, background-color 120ms ease;
+    }
+    .key .label {
+        display: block;
+        font-size: .75rem;
+        color: #444;
+        margin-top: .15rem;
+    }
+    .key.active {
+        transform: scale(1.05);
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(255,0,0,.15);
+        border-color: #f55;
+    }
+
+    .hint {
+        font-size: .8rem;
+        color: #666;
+        margin-top: .2rem;
+        text-align: center;
+    }
+
   </style>
 </head>
 <body>
@@ -43,90 +101,171 @@
   <div class="toolbar">
     <label for="kitSelect"><strong>Sound set:</strong></label>
     <select id="kitSelect" aria-label="Choose drum kit"></select>
-    <div class="status" id="statusText">Loading kits…</div>
   </div>
 
   <div class="drumset">
     <img src="./img/drumset-left.png" alt="Drum Set" width="500">
-    <div class="drum-element kick" data-drum="kick" onclick="playSound('kick')">Kick [k]</div>
-    <div class="drum-element snare" data-drum="snare" onclick="playSound('snare')">Snare [s]</div>
-    <div class="drum-element snarerim" data-drum="snarerim" onclick="playSound('snarerim')">(rim) [z]</div>
-    <div class="drum-element hihatopen" data-drum="hihatopen" onclick="playSound('hihatopen')">Hi-Hat [o]</div>
-    <div class="drum-element hihatclosed" data-drum="hihatclosed" onclick="playSound('hihatclosed')">(closed) [h]</div>
-    <div class="drum-element pedal" data-drum="pedal" onclick="playSound('pedal')">Pedal [p]</div>
-    <div class="drum-element tomlow" data-drum="tomlow" onclick="playSound('tomlow')">Low [l]</div>
-    <div class="drum-element tommid" data-drum="tommid" onclick="playSound('tommid')">Mid [m]</div>
-    <div class="drum-element tommidrim" data-drum="tommidrim" onclick="playSound('tommidrim')">(rim) [n]</div>
-    <div class="drum-element tomhigh" data-drum="tomhigh" onclick="playSound('tomhigh')">High [t]</div>
+    <div class="drum-element kick"       data-drum="kick"       onclick="playSound('kick')">Kick [k]</div>
+    <div class="drum-element snare"      data-drum="snare"      onclick="playSound('snare')">Snare [s]</div>
+    <div class="drum-element snarerim"   data-drum="snarerim"   onclick="playSound('snarerim')">(rim) [z]</div>
+    <div class="drum-element hihatopen"  data-drum="hihatopen"  onclick="playSound('hihatopen')">Hi-Hat [o]</div>
+    <div class="drum-element hihatclosed"data-drum="hihatclosed"onclick="playSound('hihatclosed')">(closed) [h]</div>
+    <div class="drum-element pedal"      data-drum="pedal"      onclick="playSound('pedal')">Pedal [p]</div>
+    <div class="drum-element tomlow"     data-drum="tomlow"     onclick="playSound('tomlow')">Low [l]</div>
+    <div class="drum-element tommid"     data-drum="tommid"     onclick="playSound('tommid')">Mid [m]</div>
+    <div class="drum-element tommidrim"  data-drum="tommidrim"  onclick="playSound('tommidrim')">(rim) [n]</div>
+    <div class="drum-element tomhigh"    data-drum="tomhigh"    onclick="playSound('tomhigh')">High [t]</div>
     <div class="drum-element tomhighrim" data-drum="tomhighrim" onclick="playSound('tomhighrim')">(rim) [d]</div>
-    <div class="drum-element ride" data-drum="ride" onclick="playSound('ride')">Ride [r]</div>
-    <div class="drum-element crash" data-drum="crash" onclick="playSound('crash')">Crash [c]</div>
+    <div class="drum-element ride"       data-drum="ride"       onclick="playSound('ride')">Ride [r]</div>
+    <div class="drum-element crash"      data-drum="crash"      onclick="playSound('crash')">Crash [c]</div>
   </div>
 
-  <script>
-    let currentKit = null;
-    const kitSelect = document.getElementById('kitSelect');
-    const statusText = document.getElementById('statusText');
+  <!-- Collapsible keyboard shortcuts panel -->
+  <details class="kbd-panel">
+    <summary>Keyboard Shortcuts</summary>
+    <div class="kbd-content">
+      <div id="keyboardMap" class="keyboard" aria-live="polite"></div>
+      <div class="hint">Tip: Click any label on the drum image or press a key to trigger a sound. Keys highlight when used.</div>
+    </div>
+  </details>
 
-    async function loadKits() {
-      try {
-        const response = await fetch('./sounds/manifest.json');
-        const data = await response.json();
-        const kits = data.kits;
-        if (!kits || kits.length === 0) throw new Error("No kits found");
+<script>
+  let currentKit = null;
+  const kitSelect = document.getElementById('kitSelect');
+  const keyboardMapEl = document.getElementById('keyboardMap');
 
-        // Populate dropdown
-        kitSelect.innerHTML = '';
-        kits.forEach(kit => {
-          const opt = document.createElement('option');
-          opt.value = kit;
-          opt.textContent = kit;
-          kitSelect.appendChild(opt);
-        });
+  // Central key→drum mapping
+  const keyMap = {
+    k: 'kick',
+    c: 'crash',
+    r: 'ride',
+    p: 'pedal',
+    s: 'snare',
+    z: 'snarerim',
+    h: 'hihatclosed',
+    o: 'hihatopen',
+    l: 'tomlow',
+    m: 'tommid',
+    n: 'tommidrim',
+    t: 'tomhigh',
+    d: 'tomhighrim'
+  };
 
-        // Load last saved kit or default to first
-        currentKit = localStorage.getItem('currentKit') || kits[0];
-        if (!kits.includes(currentKit)) currentKit = kits[0];
-        kitSelect.value = currentKit;
-        statusText.textContent = 'Current kit: ' + currentKit;
-      } catch (err) {
-        console.error(err);
-        statusText.textContent = '⚠️ Error loading manifest.json';
-      }
-    }
+  // Visual layout of the keyboard panel (purely UI)
+  const keyRows = [
+    ['q','w','e','r','t','y','u','i','o','p'],
+    ['a','s','d','f','g','h','j','k','l'],
+    ['z','x','c','v','b','n','m']
+  ];
 
-    kitSelect.addEventListener('change', () => {
-      currentKit = kitSelect.value;
-      localStorage.setItem('currentKit', currentKit);
-      statusText.textContent = 'Current kit: ' + currentKit;
+  function buildKeyboardPanel() {
+    keyboardMapEl.innerHTML = '';
+
+    // build the three rows
+    keyRows.forEach(rowKeys => {
+      const row = document.createElement('div');
+      row.className = 'key-row';
+      keyboardMapEl.appendChild(row); // append row once
+
+      rowKeys.forEach(k => {
+        const div = document.createElement('div');
+        div.className = 'key';
+        div.dataset.key = k;
+        div.innerHTML =
+          `<strong>${k.toUpperCase()}</strong>` +
+          (keyMap[k] ? `<span class="label">${keyMap[k]}</span>` : `<span class="label">—</span>`);
+        row.appendChild(div); // append each key to the row
+      });
     });
 
-    function flashLabel(drum) {
-      const el = document.querySelector(`.drum-element[data-drum="${drum}"]`);
-      if (!el) return;
+    // render any mapped keys not already shown in the three rows
+    Object.keys(keyMap).forEach(k => {
+      if (!keyboardMapEl.querySelector(`.key[data-key="${k}"]`)) {
+        const row = document.createElement('div');
+        row.className = 'key-row';
+        const div = document.createElement('div');
+        div.className = 'key';
+        div.dataset.key = k;
+        div.innerHTML = `<strong>${k.toUpperCase()}</strong><span class="label">${keyMap[k]}</span>`;
+        row.appendChild(div);
+        keyboardMapEl.appendChild(row);
+      }
+    });
+  }
+
+  async function loadKits() {
+    try {
+      const response = await fetch('./sounds/manifest.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error('Failed to fetch manifest.json');
+      const data = await response.json();
+      const kits = data.kits;
+      if (!Array.isArray(kits) || kits.length === 0) throw new Error('No kits listed');
+
+      kitSelect.innerHTML = '';
+      kits.forEach(kit => {
+        const opt = document.createElement('option');
+        opt.value = kit;
+        opt.textContent = kit;
+        kitSelect.appendChild(opt);
+      });
+
+      currentKit = localStorage.getItem('currentKit') || kits[0];
+      if (!kits.includes(currentKit)) currentKit = kits[0];
+      kitSelect.value = currentKit;
+    } catch (err) {
+      console.error(err);
+      // minimal fallback so the UI remains usable
+      kitSelect.innerHTML = '<option value="Come Out And PLay">Come Out And Play</option>';
+      currentKit = 'Come Out And Play';
+    }
+  }
+
+  kitSelect.addEventListener('change', () => {
+    currentKit = kitSelect.value;
+    localStorage.setItem('currentKit', currentKit);
+  });
+
+  function flashLabel(drum) {
+    const el = document.querySelector(`.drum-element[data-drum="${drum}"]`);
+    if (el) {
       el.classList.add('active');
       setTimeout(() => el.classList.remove('active'), 120);
     }
+  }
 
-    function playSound(drum) {
-      if (!currentKit) return;
-      const soundPath = `./sounds/${currentKit}/${drum}.mp3`;
-      const audio = new Audio(soundPath);
-      audio.play().catch(() => console.warn('Audio failed to play:', soundPath));
-      flashLabel(drum);
+  function flashKey(key) {
+    const keyEl = document.querySelector(`.key[data-key="${key}"]`);
+    if (keyEl) {
+      keyEl.classList.add('active');
+      setTimeout(() => keyEl.classList.remove('active'), 120);
     }
+  }
 
-    document.addEventListener('keydown', event => {
-      const keyMap = {
-        'k': 'kick', 'c': 'crash', 'r': 'ride', 'p': 'pedal',
-        's': 'snare', 'z': 'snarerim', 'h': 'hihatclosed', 'o': 'hihatopen',
-        'l': 'tomlow', 'm': 'tommid', 'n': 'tommidrim', 't': 'tomhigh', 'd': 'tomhighrim'
-      };
-      const drum = keyMap[event.key.toLowerCase()];
-      if (drum) playSound(drum);
-    });
+  function playSound(drum) {
+    if (!currentKit) return;
+    const soundPath = `./sounds/${currentKit}/${drum}.mp3`;
+    const audio = new Audio(soundPath);
+    audio.play().catch(() => console.warn('Audio failed to play:', soundPath));
+    flashLabel(drum);
+    // flash the corresponding key if mapped
+    const keyForDrum = Object.keys(keyMap).find(k => keyMap[k] === drum);
+    if (keyForDrum) flashKey(keyForDrum);
+  }
 
-    window.addEventListener('DOMContentLoaded', loadKits);
-  </script>
+  document.addEventListener('keydown', (event) => {
+    const k = event.key.toLowerCase();
+    const drum = keyMap[k];
+    if (drum) {
+      playSound(drum);
+      flashKey(k);
+    }
+  });
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    buildKeyboardPanel();
+    await loadKits();
+  });
+</script>
+
 </body>
 </html>
