@@ -4,6 +4,8 @@ A lightweight browser-based drum set built with **HTML, CSS, and JavaScript**.
 Click on the drums or play them from your **computer keyboard** to trigger sounds.  
 Each key is mapped to a different drum part, and multiple **sound kits** can be loaded dynamically from the `/sounds` folder.
 
+![img/gui.png](img/gui.png)
+
 ---
 
 ## 🚀 Demo & Hosting
